@@ -1,0 +1,18 @@
+- if document.class.name == "Post"
+  = link_to new_post_comment_path(document), remote: true, class: 'btn btn-sm btn-outline-info ' do
+    = icon('fas', 'comments', class: 'fa-fw mr-3')
+    | Add comment
+- else
+  = link_to edit_post_comment_path(document.post, document), remote: true, class: 'btn btn-sm btn-outline-info ' do
+    = icon('fas', 'comments', class: 'fa-fw mr-3')
+    | Edit 
+
+- if !document_liked?(document)  
+  = link_to new_like_path(user_id: current_user.id,  likeable_id: document.id ,likeable_type: document.class.name), remote: true do
+    = icon('fa', 'thumbs-up', class: 'fa-fw ml-3')
+- else
+  = link_to like_path(document.id, user_id: current_user.id, likeable_type: document.class.name ), remote: true, method: :delete do
+    = icon('fa', 'thumbs-down', class: 'fa-fw ml-3')
+
+small.text-muted.ml-3
+  = document.likes.count

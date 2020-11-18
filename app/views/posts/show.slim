@@ -1,0 +1,54 @@
+.row
+  .col-12
+    .card.mt-3.mb-5.
+
+      .card-body
+        / post title
+        h5.card-title
+          = @post.title
+
+        / any notice
+        p#notice.m-0 = notice
+        .col-12
+          - if @post.avatar.attached?
+            = image_tag(url_for(@post.avatar), class: 'card-img-top')
+              
+        / body in given format
+        blockquote.blockquote.my-3.fn-17
+          p.card-text.mb-0 = @post.body
+          footer.blockquote-footer
+            | Written by&nbsp;
+            cite title="Author" = @post&.user&.full_name
+
+        / time
+        p.card-text
+          small.text-muted = "Published on #{@post.created_at&.strftime('%d/%m/%Y %H:%M %p')}"
+          small.text-muted.mx-2 |
+          small.text-muted = "Last updated on #{@post.updated_at&.strftime('%d/%m/%Y %H:%M %p')}"
+
+      / user specific actions
+      .card-footer.bg-transparent
+        .row
+          .col-12
+            .float-left id=="#{@post.id}_#{@post.class.name}_like_count_container"
+                = render 'likes/like_action', document: @post
+
+            .float-right
+              - if current_user.id == @post.user_id 
+                - if @post.draft?
+                  = link_to edit_user_post_path(current_user, @post), class: 'btn btn-sm btn-outline-success  mr-3' do
+                    = icon('fas', 'edit', class: 'fa-fw mr-1')
+                    | Edit
+                = link_to user_post_path(current_user, @post), class: 'btn btn-sm btn-outline-danger ', data: { confirm: 'Are you sure?' }, method: :delete do
+                  = icon('fas', 'trash', class: 'fa-fw mr-1')
+                  | Delete
+      / new comments
+      .row
+        .col-12#new_comments_container
+      / list of comment comments
+      .row
+        .col-12
+          ul.list-group.list-group-flush#all_comments_container
+            - if not @comments.blank?
+              - @comments.each do |comment|
+                = render 'comments/comment', post: @post, comment: comment

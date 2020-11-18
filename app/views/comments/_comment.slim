@@ -1,0 +1,19 @@
+.row.list-group-item.list-group-item-action.flex-column id=="#{comment.id}_edit_comments"
+  p.my-1 = comment.body
+  
+  small.text-muted
+    span commented by&nbsp; 
+    cite = "#{comment&.user&.full_name}"
+    
+    span.ml-3 like count
+
+    .float-right 
+      = "#{comment.created_at&.strftime('%d/%m/%Y %H:%M %p')}"
+
+  -if current_user == comment.user 
+  .row.mt-2
+    .col-8 id=="#{comment.id}_#{comment.class.name}_like_count_container"
+      = render 'likes/like_action', document: comment
+      
+      / = link_to user_post_path(current_user, @post) do
+      /   = icon('fa', 'thumbs-up', class: 'fa-fw ml-3')

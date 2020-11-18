@@ -1,0 +1,2 @@
+$('#new_comments_container').html('');
+$('#all_comments_container').prepend('<%= j render "comments/comment", post: @post, comment: @comment %>');

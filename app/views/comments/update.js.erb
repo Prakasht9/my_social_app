@@ -1,0 +1,2 @@
+$('#<%= @comment.id %>_edit_comments').html(' ');
+$('#<%= @comment.id %>_edit_comments').html('<%= j render "comments/comment", post: @post, comment: @comment %>');
